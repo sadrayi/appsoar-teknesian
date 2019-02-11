@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="11">
+
+        <RelativeLayout
+            android:id="@+id/factorrel1"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="5"
+            android:background="@drawable/backgray"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/radif1factor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="خدمات انجام شده"
+                android:textAlignment="gravity" />
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:id="@+id/factorrel2"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="2"
+            android:background="@drawable/backgray"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/radif2factor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="تعداد"
+                android:textAlignment="gravity"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:id="@+id/factorrel3"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="4"
+            android:background="@drawable/backgray"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/radif3factor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="مبلغ"
+                android:textAlignment="gravity" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

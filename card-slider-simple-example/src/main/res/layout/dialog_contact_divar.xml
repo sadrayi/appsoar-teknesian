@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layoutDirection="rtl"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/bck"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:rotation="45"
+                android:src="@drawable/ic_add_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bck"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="در انجام معاملات دقت داشته باشید. اپ سور فقط جهت نمایش آگهی می باشد و کلیه مسئولیت معاملات بر عهده خود شما خواهد بود!!"
+                android:textColor="#163842"
+                android:textSize="16dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv1"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/calldivar"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="2dp"
+                    android:fontFamily="@font/iransansfont"
+                    android:layout_weight="1"
+                    android:background="@drawable/curve_shape_btn"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:text="تماس با فروشنده"
+                    android:textColor="@color/blcak"
+                    android:textSize="14dp"/>
+
+                <Button
+                    android:id="@+id/smsdivar"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:fontFamily="@font/iransansfont"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="2dp"
+                    android:background="@drawable/curve_shape_btn"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:text="ارسال پیامک"
+                    android:textColor="@color/blcak"
+                    android:textSize="14dp"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

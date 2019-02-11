@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">اپ سور متخصصین آسانسور</string>
+    <string name="no_order">سبد خرید شما خالی است. لطفا ابتدا سفارشی ارسال کنید.</string>
+    <string name="title_cart">سبد خرید من</string>
+    <string name="action_cart">سبد خرید من</string>
+    <string name="action_checkout">برو به صفحه خرید</string>
+    <string name="action_buy">افزودن به سبد خرید</string>
+    <string name="action_save">ذخیره تصویر</string>
+    <string name="confirm">تائیدیه</string>
+    <string name="catid">catid</string>
+    <string name="catname">catname</string>
+    <string name="sherkatno">sherkatno</string>
+    <string name="lastlatlng">lastlatlng</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_clear">پاک کردن همه</string>
+    <string name="title_menu">دسته بندی محصولات</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="number_order">تعداد سفارش: </string>
+    <string name="search_query_text">جستجو&#8230;</string>
+    <string name="not_found">محصولی یافت نشد!</string>
+    <string name="sending_alert">در حال ارسال... لطفا منتظر بمانید &#8230;</string>
+    <string name="error">خطایی رخ داد.مجددا امتحان نمایید.</string>
+    <string name="wrongnumber">شماره همراه اشتباه است.</string>
+    <string name="phone">phone</string>
+    <string name="id">id</string>
+    <string name="token">token</string>
+    <string name="username">username</string>
+    <string name="onlinestatus">onlinestatus</string>
+    <string name="profile_pic">profile_pic</string>
+    <string name="total_order">کل سفارشات</string>
+    <string name="request_id">request_id</string>
+    <string name="share_content"> مایل هستیم این اپلیکیشن را با شما به اشتراک بگذارم. در اینجا قادر به دانلود آن هستید:  <br /></string>
+
+    <string name="cat_name">cat_name</string>
+    <string name="date">date</string>
+    <string-array name="addresstitle">
+        <item>منزل</item>
+        <item>محل کار</item>
+        <item>شرکت</item>
+        <item>پاساژ</item>
+        <item>کارخانه</item>
+        <item>سایر</item>
+    </string-array>
+    <string-array name="doorkindcalculate">
+        <item>تلسکوپی دولنگه</item>
+        <item>تلسکوپی سه لنگه</item>
+        <item>سانترال دولنگه</item>
+        <item>سانترال چهار لنگه</item>
+        <item>درب اتوبوسی</item>
+    </string-array>
+    <string name="eshterakstatus">eshterakstatus</string>
+    <string name="address">address</string>
+    <string name="address_pic">address_pic</string>
+    <string name="point">point</string>
+    <string name="form_alert">لطفا، فیلدهای فرم را تکمیل نمایید.</string>
+    <string name="reqstats">reqstats</string>
+    <string name="saat">saat</string>
+    <string name="bazdidstart">bazdidstart</string>
+    <string name="wrongcode">کد صحیح نمی باشد.</string>
+    <string name="name">name</string>
+    <string name="failed_connect_network">آگهی ای وجود ندارد!</string>
+    <string-array name="kharabikind">
+        <item>قفل درب</item>
+        <item>تابلو فرمان</item>
+        <item>موتور</item>
+        <item>درایو تابلو</item>
+        <item>پاراشوت</item>
+        <item>درایو درب</item>
+        <item>سنسور</item>
+        <item>سایر</item>
+    </string-array>
+    <string-array name="teknesianneed">
+        <item>تکنسین  ندارد</item>
+        <item>تکنسین موتور دارد</item>
+        <item>تکنسین تابلو دارد</item>
+        <item>بهینه سازی دارد</item>
+    </string-array>
+
+    <string-array name="spareusage">
+        <item>بدون مصرف</item>
+        <item>مصرف شده</item>
+    </string-array>
+
+    <string name="clear_all_order">آیا مایل به پاک کردن کل سفارشات هستید؟</string>
+    <string name="clear_one_order">آیا مایل به پاک کردن این سفارش هستید؟</string>
+    <string name="initializing_faker">دریافت اطلاعات...</string>
+    <string-array name="poshtibaniarray">
+        <item>مشاوره حقوقی و امور شرکت ها</item>
+        <item>حسابداری</item>
+        <item>مشاوره بیمه و مالیات</item>
+        <item>خدمات کامپیوتر</item>
+        <item>کارشناس رسمی دادگستری</item>
+    </string-array>
+    <string name="connect">ارتباط</string>
+    <string name="title_activity_divar">DivarActivity</string>
+    <string name="Todo">TODO</string>
+</resources>

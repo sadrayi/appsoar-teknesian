@@ -1,0 +1,62 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layoutDirection="rtl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="#fafafa"
+    android:focusable="true"
+    android:orientation="vertical" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:minHeight="?android:attr/actionBarSize"
+        android:background="?colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:navigationIcon="@drawable/ic_close"
+        app:contentInsetStart="0dp"
+        app:titleMarginStart="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/orange"
+            android:paddingLeft="0dp"
+            android:text="انتخاب"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="0.7"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="32dp"
+            android:paddingBottom="48dp"
+            android:paddingLeft="56dp"
+            android:paddingRight="24dp"
+            android:lineSpacingExtra="3dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="آدرس: مشهد صیاد شیرازی"
+            tools:ignore="RtlHardcoded" />
+
+    </ScrollView>
+
+</LinearLayout>
+</LinearLayout>

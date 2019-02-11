@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="11">
+
+        <RelativeLayout
+            android:id="@+id/factorrel1"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="11"
+            android:background="@drawable/backgray"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/radif1factor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="نام شرکت"
+                android:drawableLeft="@mipmap/ic_info"
+                android:textAlignment="gravity" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

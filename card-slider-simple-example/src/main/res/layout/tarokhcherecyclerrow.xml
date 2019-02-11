@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layoutDirection="rtl"
+    android:layout_marginTop="48dp"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="7dp"
+        android:padding="3dp"
+        android:background="@drawable/backgray">
+
+        <Button
+            android:id="@+id/cost1"
+            android:layout_width="60dp"
+            android:textSize="12sp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/button_detail"
+            android:text="جزئیات"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/cost2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="تعمیر آسانسور" />
+
+        <ImageView
+            android:id="@+id/cotsttitle1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp" />
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
