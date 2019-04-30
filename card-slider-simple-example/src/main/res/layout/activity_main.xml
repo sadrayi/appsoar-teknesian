@@ -114,9 +114,20 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/text"
                 android:layout_centerHorizontal="true"
-                android:layout_weight="1"
+                android:layout_weight="0.4"
                 android:background="@drawable/rounded_button"
                 android:text="شروع خدمت"
+                android:textColor="#FFF"
+                android:textSize="20sp" />
+            <Button
+                android:id="@+id/dialnumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/text"
+                android:layout_weight="0.6"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/blue_button_background"
+                android:text="تماس با کارفرما"
                 android:textColor="#FFF"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -129,8 +140,16 @@
             android:textAlignment="center"
             android:layout_marginRight="@dimen/left_offset"
             android:layout_marginLeft="10dp"/>
-
+        <TextSwitcher
+            android:id="@+id/ts_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginRight="@dimen/left_offset"
+            android:layout_below="@id/frameLayout1"
+            android:layout_marginLeft="10dp"/>
         <FrameLayout
+            android:id="@+id/frameLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

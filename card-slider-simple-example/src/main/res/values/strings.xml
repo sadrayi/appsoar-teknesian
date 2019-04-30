@@ -85,7 +85,6 @@
 
     <string name="clear_all_order">آیا مایل به پاک کردن کل سفارشات هستید؟</string>
     <string name="clear_one_order">آیا مایل به پاک کردن این سفارش هستید؟</string>
-    <string name="initializing_faker">دریافت اطلاعات...</string>
     <string-array name="poshtibaniarray">
         <item>مشاوره حقوقی و امور شرکت ها</item>
         <item>حسابداری</item>
@@ -93,7 +92,6 @@
         <item>خدمات کامپیوتر</item>
         <item>کارشناس رسمی دادگستری</item>
     </string-array>
-    <string name="connect">ارتباط</string>
     <string name="title_activity_divar">DivarActivity</string>
     <string name="Todo">TODO</string>
 </resources>

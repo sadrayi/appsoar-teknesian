@@ -13,15 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#e7e7e7"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:clickable="true"
+            android:visibility="gone"
             app:layout_anchor="@+id/appbar"
             app:layout_anchorGravity="left|bottom"
             fab:srcCompat="@mipmap/ic_pdf" />
@@ -97,8 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="18dp"
-                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
                         android:text="Ayam Goreng"
                         android:textSize="22sp"
                         android:textStyle="bold" />

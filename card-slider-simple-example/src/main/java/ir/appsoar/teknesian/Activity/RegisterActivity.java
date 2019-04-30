@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements IPickResult {
         phonetxt = findViewById(R.id.phone);
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         if (!prefs.getString(getString(R.string.name), "0").equals(0))
-            edit = true;
+            edit = false;
         phonetxt.setText(prefs.getString(getString(R.string.phone), "0"));
         token = prefs.getString(getString(R.string.token), "0");
         Button registerbut = findViewById(R.id.dialogButtonOK);

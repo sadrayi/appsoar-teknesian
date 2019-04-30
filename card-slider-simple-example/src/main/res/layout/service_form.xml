@@ -17,12 +17,14 @@
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox1"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="وضعیت سیم بکسل ها بررسی شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox2"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="وضعیت ترمز موتور بررسی شد" />
@@ -30,22 +32,26 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox3"
                 android:layout_weight="1"
                 android:text="وضعیت فلکه هرزگرد بررسی شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox4"
                 android:layout_weight="1"
                 android:text="وضعیت موتور بررسی شد" />
 
             <CheckBox
+                android:id="@+id/checkbox5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="کفشک کابین و وزنه بررسی شد" />
 
             <CheckBox
+                android:id="@+id/checkbox6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,18 +59,21 @@
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox7"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="ترمز تنظیم و سالم است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox8"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="فلکه هرزگرد سالم و بدون ایراد است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox9"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="موتور بدون ایراد است" />
@@ -72,17 +81,20 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox10"
                 android:layout_weight="1"
                 android:text="کفشک کابین و وزنه سالم است" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/radiogroup"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:layout_width="wrap_content"
+                    android:checked="true"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="فن موتور دارد" />
@@ -90,6 +102,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/withoutfan"
                     android:layout_weight="1"
                     android:text="فن موتور ندارد" />
 
@@ -98,70 +111,82 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox11"
                 android:layout_weight="1"
                 android:text="فن موتور سالم است" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox12"
                 android:layout_weight="1"
                 android:text="تنظیف قطعات آسانسور موجود در موتورخانه انجام شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox13"
                 android:layout_weight="1"
                 android:text="روغن کابین نظافت شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox14"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="روغن دان ریل کابین پر شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox15"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="روغن دان ریل وزنه پر شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox16"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="پلاتین قفل دربها سرویس شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox17"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="سنسور و مگنت تشخیص طبقات تمیز شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox18"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="فلکه هرزگرد موتور گریسکاری شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox19"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="ترمینالهای تابلو فرمان آچار کشی شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox20"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="ترمینالهای کنتاکتورها آچار کشی شد" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox21"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="آچارکشی فلکه گاورنر بالا و پایین" />
 
             <CheckBox
+                android:id="@+id/checkbox22"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -169,42 +194,49 @@
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox23"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="نمایشگر شاسی در تمام طبقات بدون نقص است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox24"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="روشنایی کابین تکمیل و بدون نقص است " />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox25"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="نمایشگر و شاسی کابین بدون نقص است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox26"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="کابین در تمام طبقات تراز است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox27"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="حرکت کابین مطلوب است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox28"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="فتوسل سالم و بدون نقص است" />
 
             <CheckBox
                 android:layout_width="match_parent"
+                android:id="@+id/checkbox29"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="فن کابین سالم است" />
@@ -212,8 +244,41 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/checkbox30"
                 android:layout_weight="1"
                 android:text="ریل کابین و وزنه سرویس شد" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:gravity="right|bottom"
+                    android:text="توضیحات"
+                    android:textAlignment="gravity"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="0.8"
+                    android:background="#e2e2e2"
+                    android:ems="10"
+                    android:gravity="right"
+                    android:hint="توضیحات"
+                    android:inputType="textPersonName"
+                    android:textAlignment="gravity"
+                    android:textDirection="rtl" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

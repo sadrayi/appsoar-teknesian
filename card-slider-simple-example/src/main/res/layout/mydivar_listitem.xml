@@ -50,6 +50,7 @@
                 android:layout_below="@id/product_pic"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8dp"
+                android:visibility="gone"
                 android:layout_marginRight="16dp"
                 android:layout_toLeftOf="@id/moshahede"
                 android:background="@drawable/curve_shape_btn_disabled"

@@ -157,7 +157,7 @@ public class DeleteFactorItemDialog extends Dialog implements
         if (HasilProses.trim().equalsIgnoreCase("200")) {
             dismiss();
             FactorFrag.clearData();
-            new FactorFrag.sendData().execute();
+            new FactorFrag.sendData1().execute();
         } else if (HasilProses.trim().equalsIgnoreCase("400")) {
             Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
         } else {

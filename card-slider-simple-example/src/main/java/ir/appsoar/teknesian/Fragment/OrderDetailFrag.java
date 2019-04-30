@@ -97,12 +97,27 @@ public class OrderDetailFrag extends Fragment {
             startActivity(intent);
         });
         Button call = rootView.findViewById(R.id.imageView20);
+        Button shenasname = rootView.findViewById(R.id.shenasname);
+        Button tarikhche = rootView.findViewById(R.id.tarikhche);
+        shenasname.setOnClickListener(view->{
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, new ShenasnameFragment());
+            transaction.addToBackStack(OrderManageActivity.class.getName());
+            transaction.commit();
+        });
+        tarikhche.setOnClickListener(view->{
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, new BuildingHistoryFragment());
+            transaction.addToBackStack(OrderManageActivity.class.getName());
+            transaction.commit();
+        });
         Button cancell = rootView.findViewById(R.id.imageView21);
         if(OrderManageActivity.reqstatus.equals("2"))
         call.setOnClickListener(view -> {
             Intent callIntent = new Intent(Intent.ACTION_DIAL);
             callIntent.setData(Uri.parse("tel:"+ OrderManageActivity.phone));
-            getContext().startActivity(callIntent);              });
+            getContext().startActivity(callIntent);
+        });
         else {
             call.setVisibility(View.INVISIBLE);
         }

@@ -3,6 +3,7 @@ package ir.appsoar.teknesian.Fragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.appsoar.teknesian.R;
@@ -36,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +51,8 @@ import ir.appsoar.teknesian.Dialoge.FinishFactorDialog;
 import ir.appsoar.teknesian.Helper.Config;
 import ir.appsoar.teknesian.Models.ItemFactor;
 
+import static ir.appsoar.teknesian.Activity.OrderManageActivity.reqid;
+
 
 /**
  * Created by LapTop on 09/02/2018.
@@ -59,9 +64,10 @@ public class FactorFrag extends Fragment {
     private static List<ItemFactor> arrayItemCategory;
     public static ArrayList<Map> factoritems = new ArrayList<>();
     public static String token;
+    public static Bitmap sign;
     private static RecyclerView recyclerView;
     public static String id;
-
+    public static String latlng;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parentViewGroup,
                              Bundle savedInstanceState) {
@@ -89,11 +95,29 @@ public class FactorFrag extends Fragment {
         }
         if(OrderManageActivity.reqstatus.equals("2"))
         kala.setOnClickListener(view -> {
-            String latlng=prefs.getString(getString(R.string.lastlatlng),null);
+            latlng=prefs.getString(getString(R.string.lastlatlng),null);
             Log.i("***********prefs", latlng);
             if(latlng!=null) {
+               SweetAlertDialog pDialog1 = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                pDialog1.setContentText("آیا مایل به اخذ امضا از مشتری هستید .");
+                pDialog1.setTitleText("اتمام سرویس");
+                pDialog1.setConfirmText("بله")
+                        .setCancelText("خیر")
+                        .setCancelClickListener(sweetAlertDialog -> new sendData().execute());
+                pDialog1.setConfirmClickListener(sweetAlertDialog -> {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_frame,new SingitureFragment());
+                    transaction.addToBackStack(FactorFrag.class.getName());
+                    transaction.commit();
+                    pDialog1.dismissWithAnimation();
+                });
+                if (! getActivity().isFinishing()) {
+
+                    pDialog1.show();
+
+                }/*
                 FinishFactorDialog cdd = new FinishFactorDialog(getActivity(), FactorFrag.id, FactorFrag.token,prefs.getString(getString(R.string.lastlatlng),null));
-                cdd.show();
+                cdd.show();*/
             }
             else
             {
@@ -114,12 +138,12 @@ public class FactorFrag extends Fragment {
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         token=prefs.getString(getString(R.string.token),"");
         id=prefs.getString(getString(R.string.id),"");
-        new sendData().execute();
+        new sendData1().execute();
 
         return rootView;
     }
 
-    private static String Result;
+    private static String Result1;
     static String ResultFinish;
     private static int dpToPx() {
         Resources r = OrderManageActivity.activity.getResources();
@@ -162,7 +186,7 @@ public class FactorFrag extends Fragment {
     public static void clearData() {
         factoritems.clear();
     }
-    public static class sendData extends AsyncTask<Void, Void, Void> {
+    public static class sendData1 extends AsyncTask<Void, Void, Void> {
 
         ProgressDialog dialog;
 
@@ -174,21 +198,21 @@ public class FactorFrag extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Result = getRequest(id,token);
+            Result1 = getRequest1(id,token);
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Void result1) {
             dialog.dismiss();
-            resultAlert(Result);
+            resultAlert1(Result1);
         }
     }
     private static SharedPreferences prefs;
     public static String mojudi;
     public static JSONObject list;
-    private static String request(HttpResponse response) {
-        String result = "";
+    private static String request1(HttpResponse response) {
+        String result1 = "";
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String line;
@@ -197,7 +221,7 @@ public class FactorFrag extends Fragment {
                 str.append(line);
             }
             JSONObject json = new JSONObject(str.toString());
-            result=json.getString("status");
+            result1=json.getString("status");
             JSONArray namearray1 = json.getJSONArray("items");
             for (int i = 0; i < namearray1.length(); i++) {
                 JSONObject costarray1 = new JSONObject(namearray1.get(i).toString());
@@ -236,19 +260,19 @@ public class FactorFrag extends Fragment {
             }
 
         } catch (Exception ex) {
-            if(result==null)
-                result = "Error";
+            if(result1==null)
+                result1 = "Error";
         }
-        return result;
+        return result1;
     }
-    private static String getRequest(
+    private static String getRequest1(
             String mobile,
             String token
     ) {
-        String result = "";
+        String result1 = "";
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost request = new HttpPost(Config.ADMIN_PANEL_URL + "getfactoritems");
+        HttpPost request1 = new HttpPost(Config.ADMIN_PANEL_URL + "getfactoritems");
 
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<>(6);
@@ -256,15 +280,15 @@ public class FactorFrag extends Fragment {
             nameValuePairs.add(new BasicNameValuePair("requestid", OrderManageActivity.reqid));
             //OrderManageActivity.reqid
             nameValuePairs.add(new BasicNameValuePair("token", token));
-            request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
-            HttpResponse response = client.execute(request);
-            result = request(response);
+            request1.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+            HttpResponse response1 = client.execute(request1);
+            result1 = request1(response1);
         } catch (Exception ex) {
-            result = "Unable to connect.";
+            result1 = "Unable to connect.";
         }
-        return result;
+        return result1;
     }
-    private static void resultAlert(String HasilProses) {
+    private static void resultAlert1(String HasilProses) {
         if (HasilProses.trim().equalsIgnoreCase("success")) {
             AdapterFactor adapterCategory = new AdapterFactor(OrderManageActivity.activity);
             recyclerView.setAdapter(adapterCategory);
@@ -278,5 +302,83 @@ public class FactorFrag extends Fragment {
         else {
         }
     }
+    private String Result;
+    class sendData extends AsyncTask<Void, Void, Void> {
 
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(getContext(), "", getContext().getString(R.string.sending_alert), true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            Result = getRequest(id,token, reqid);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+            resultAlert(Result);
+        }
+    }
+
+    private static String request(HttpResponse response) {
+        String result = "";
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line;
+            StringBuilder str = new StringBuilder();
+            while ((line = in.readLine()) != null) {
+                str.append(line);
+            }
+            JSONObject json = new JSONObject(str.toString());
+            result=json.getString("status");
+            if(result.equals("success"))
+                result= "200";
+            else
+                result= "400";
+
+        } catch (Exception ex) {
+            if(result==null)
+                result = "Error";
+        }
+        return result;
+    }
+    private String getRequest(
+            String id,
+            String token,
+            String reqid
+    ) {
+        String result = "";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost request = new HttpPost(Config.ADMIN_PANEL_URL + "finishfactor");
+        try {
+            List<NameValuePair> nameValuePairs = new ArrayList<>(6);
+            nameValuePairs.add(new BasicNameValuePair("id", id));
+            nameValuePairs.add(new BasicNameValuePair("token", token));
+            nameValuePairs.add(new BasicNameValuePair("requestid", reqid));
+            nameValuePairs.add(new BasicNameValuePair("location",latlng));
+            request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+            HttpResponse response = client.execute(request);
+            result = request(response);
+        } catch (Exception ex) {
+            result = "Unable to connect.";
+        }
+        return result;
+    }
+    private void resultAlert(String HasilProses) {
+        if (HasilProses.trim().equalsIgnoreCase("200")) {
+            FactorFrag.clearData();
+            getActivity().finish();
+        } else if (HasilProses.trim().equalsIgnoreCase("400")) {
+            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

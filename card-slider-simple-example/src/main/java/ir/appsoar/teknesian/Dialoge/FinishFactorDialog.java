@@ -79,7 +79,6 @@ public class FinishFactorDialog extends Dialog implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.taid:
-                new sendData().execute();
                 break;
             case R.id.cancel:
                 dismiss();
@@ -89,84 +88,5 @@ public class FinishFactorDialog extends Dialog implements
         }
         dismiss();
     }
-    private String Result;
-    class sendData extends AsyncTask<Void, Void, Void> {
 
-        ProgressDialog dialog;
-
-        @Override
-        protected void onPreExecute() {
-            dialog = ProgressDialog.show(getContext(), "", getContext().getString(R.string.sending_alert), true);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            Result = getRequest(id,token, reqid);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            dialog.dismiss();
-            resultAlert(Result);
-        }
-    }
-
-    private static String request(HttpResponse response) {
-        String result = "";
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String line;
-            StringBuilder str = new StringBuilder();
-            while ((line = in.readLine()) != null) {
-                str.append(line);
-            }
-            JSONObject json = new JSONObject(str.toString());
-            result=json.getString("status");
-            if(result.equals("success"))
-                result= "200";
-            else
-                result= "400";
-
-        } catch (Exception ex) {
-            if(result==null)
-                result = "Error";
-        }
-        return result;
-    }
-    private String getRequest(
-            String id,
-            String token,
-            String reqid
-    ) {
-        String result = "";
-
-        HttpClient client = new DefaultHttpClient();
-        HttpPost request = new HttpPost(Config.ADMIN_PANEL_URL + "finishfactor");
-        try {
-            List<NameValuePair> nameValuePairs = new ArrayList<>(6);
-            nameValuePairs.add(new BasicNameValuePair("id", id));
-            nameValuePairs.add(new BasicNameValuePair("token", token));
-            nameValuePairs.add(new BasicNameValuePair("requestid", reqid));
-            nameValuePairs.add(new BasicNameValuePair("location",latlng));
-            request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
-            HttpResponse response = client.execute(request);
-            result = request(response);
-        } catch (Exception ex) {
-            result = "Unable to connect.";
-        }
-        return result;
-    }
-    private void resultAlert(String HasilProses) {
-        if (HasilProses.trim().equalsIgnoreCase("200")) {
-            dismiss();
-            FactorFrag.clearData();
-            c.finish();
-        } else if (HasilProses.trim().equalsIgnoreCase("400")) {
-            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
-        }
-    }
 }

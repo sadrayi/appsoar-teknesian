@@ -273,8 +273,7 @@ public class SafetyDetailsActivity extends AppCompatActivity {
                     String htmlText = Menu_description;
 
                     String text = "<html dir='rtl'><head>"
-                            + "<style type=\"text/css\">body{color: #525252;}"
-                            + "</style></head>"
+                            + "</head>"
                             + "<body>"
                             + htmlText
                             + "</body></html>";
@@ -362,8 +361,7 @@ public class SafetyDetailsActivity extends AppCompatActivity {
                     String htmlText = Menu_description;
 
                     String text = "<html><head>"
-                            + "<style type=\"text/css\">body{color: #525252;}"
-                            + "</style></head>"
+                            + "</head>"
                             + "<body>"
                             + htmlText
                             + "</body></html>";

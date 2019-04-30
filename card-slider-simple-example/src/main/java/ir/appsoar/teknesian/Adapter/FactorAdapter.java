@@ -43,9 +43,8 @@ public class FactorAdapter extends RecyclerView.Adapter<FactorViewHolder> {
     public FactorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.factorrecyclerrow, null);
-        FactorViewHolder recyclerViewHolder = new FactorViewHolder(layoutView);
 
-        return recyclerViewHolder;
+        return new FactorViewHolder(layoutView);
     }
 
     @Override

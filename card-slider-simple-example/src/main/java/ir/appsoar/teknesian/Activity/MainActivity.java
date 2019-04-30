@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private static String[] pic;
     private final int[] pics = {R.drawable.p15, R.drawable.p15, R.drawable.p15, R.drawable.p15, R.drawable.p15};
     private static String[] descriptions;
+    private static String[] commenttext;
     private static String[] countries;
     private static String[] places;
     private static String[] temperatures;
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private TextSwitcher placeSwitcher;
     private TextSwitcher clockSwitcher;
     private TextSwitcher descriptionsSwitcher;
+    private TextSwitcher comment;
 
     private TextView country1TextView;
     private TextView country2TextView;
@@ -141,7 +144,21 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.failed_connect_network), Toast.LENGTH_SHORT).show();
         }
         Button start = findViewById(R.id.dialogButtonOK);
-        start.setOnClickListener(view -> new sendDatastart().execute());
+
+        start.setOnClickListener(view ->{
+            start.setEnabled(false);
+            pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE);
+            pDialog.setTitleText("هشدار")
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        new sendDatastart().execute();
+                        pDialog.dismiss();
+                    })
+                    .setCancelClickListener(sweetAlertDialog -> pDialog.dismiss())
+                    .setConfirmText("تایید")
+                    .setCancelText("خیر")
+                    .setContentText("آیا از شروع این خدمت مطمئن هستید؟").setCancelable(false);
+            pDialog.show();
+        });
 
     }
 
@@ -189,15 +206,23 @@ public class MainActivity extends AppCompatActivity {
             clockSwitcher.setCurrentText(times[0]);
 
             descriptionsSwitcher = findViewById(R.id.ts_description);
+            comment = findViewById(R.id.ts_comment);
             descriptionsSwitcher.setInAnimation(MainActivity.this, android.R.anim.fade_in);
             descriptionsSwitcher.setOutAnimation(MainActivity.this, android.R.anim.fade_out);
             descriptionsSwitcher.setFactory(new TextViewFactory(R.style.DescriptionTextView, false));
             descriptionsSwitcher.setCurrentText((descriptions[0]));
+            comment.setInAnimation(MainActivity.this, android.R.anim.fade_in);
+            comment.setOutAnimation(MainActivity.this, android.R.anim.fade_out);
+            comment.setFactory(new TextViewFactory(R.style.DescriptionTextView, false));
+            comment.setCurrentText((commenttext[0]));
 
 
             TextView descriptionsTextView = (TextView) descriptionsSwitcher
                     .getCurrentView();
             descriptionsTextView.setTypeface(Typeface.createFromAsset(getAssets(), "vazir.ttf"));
+            TextView commentTextView = (TextView) comment
+                    .getCurrentView();
+            commentTextView.setTypeface(Typeface.createFromAsset(getAssets(), "vazir.ttf"));
             TextView clockSwitcherTextView = (TextView) clockSwitcher.getCurrentView();
             clockSwitcherTextView.setTypeface(Typeface.createFromAsset(getAssets(), "vazir.ttf"));
             TextView temperatureTextView = (TextView) temperatureSwitcher.getCurrentView();
@@ -280,9 +305,14 @@ public class MainActivity extends AppCompatActivity {
             animV[0] = R.anim.slide_in_bottom;
             animV[1] = R.anim.slide_out_top;
         }
-
         setCountryText(countries[pos % countries.length], left2right);
 
+        Button dial = findViewById(R.id.dialnumber);
+        dial.setOnClickListener(view->{
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse("tel:"+ phone[pos % countries.length]));
+            startActivity(callIntent);
+        });
         temperatureSwitcher.setInAnimation(MainActivity.this, animH[0]);
         temperatureSwitcher.setOutAnimation(MainActivity.this, animH[1]);
         temperatureSwitcher.setText(temperatures[pos % temperatures.length]);
@@ -293,6 +323,9 @@ public class MainActivity extends AppCompatActivity {
         TextView descriptionsTextView = (TextView) descriptionsSwitcher
                 .getCurrentView();
         descriptionsTextView.setTypeface(Typeface.createFromAsset(getAssets(), "vazir.ttf"));
+        TextView commentTextView = (TextView) comment
+                .getCurrentView();
+        commentTextView.setTypeface(Typeface.createFromAsset(getAssets(), "vazir.ttf"));
         TextView clockSwitcherTextView = (TextView) clockSwitcher.getCurrentView();
         clockSwitcherTextView.setTypeface(Typeface.createFromAsset(getAssets(), "vazir.ttf"));
         TextView temperatureTextView = (TextView) temperatureSwitcher.getCurrentView();
@@ -303,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
         clockSwitcher.setOutAnimation(MainActivity.this, animV[1]);
         clockSwitcher.setText(times[pos % times.length]);
         descriptionsSwitcher.setText((descriptions[pos % descriptions.length]));
+        comment.setText((commenttext[pos % commenttext.length]));
         currentPosition = pos;
     }
 
@@ -426,6 +460,7 @@ public class MainActivity extends AppCompatActivity {
                 times = new String[jsonArray.length()];
                 reqid = new String[jsonArray.length()];
                 descriptions = new String[jsonArray.length()];
+                commenttext = new String[jsonArray.length()];
                 if (jsonArray.length() > 0)
                     for (int i = 0; i < jsonArray.length(); i++) {
                         objJson = jsonArray.getJSONObject(i);
@@ -448,6 +483,10 @@ public class MainActivity extends AppCompatActivity {
                             descriptions[i] = objJson.getString("address");
                         else
                             descriptions[i] = "مکان نامشخص";
+                        if (objJson.has("comment"))
+                            commenttext[i] = "توضیحات: "+objJson.getString("comment");
+                        else
+                            commenttext[i] = "بدون توضیح";
                         if (objJson.has("eshterakstatus"))
                             temperatures[i] = objJson.getString("eshterakstatus");
                         else

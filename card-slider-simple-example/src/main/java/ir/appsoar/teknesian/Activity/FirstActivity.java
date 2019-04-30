@@ -25,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import static android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED;
 
 public class FirstActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -478,6 +479,25 @@ public class FirstActivity extends AppCompatActivity
             }
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        int id=v.getId();
+        if (id == R.id.nav_camera) {
+
+        } else if (id == R.id.requests) {
+            startActivity(new Intent(FirstActivity.this, Requests_Frag.class));
+        } else if (id == R.id.editprofile) {
+            startActivity(new Intent(FirstActivity.this, RegisterActivity.class));
+        } else if (id == R.id.terms) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://snapplift.ir/help.html"));
+            startActivity(browserIntent);
+        }
+        drawer.closeDrawer(GravityCompat.START);
     }
 
 }

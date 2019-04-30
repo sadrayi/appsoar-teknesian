@@ -185,6 +185,7 @@
         android:layout_weight="0.6"
         android:orientation="vertical"
         android:animateLayoutChanges="true">
+
         <ImageView
             android:id="@+id/ts_map"
             android:layout_width="match_parent"
@@ -197,9 +198,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="0.16"
+            android:background="@drawable/gradient_map"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/shenasname"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/green"
+                android:scaleType="fitXY"
+                android:text="شناسنامه آسانسور"
+                app:srcCompat="@drawable/button4" />
+
+            <Button
+                android:id="@+id/tarikhche"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.65"
+                android:background="@color/orange"
+                android:scaleType="fitXY"
+                android:text="تاریخچه خدمات"
+                app:srcCompat="@drawable/vaziat1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:background="@drawable/gradient_map"
             android:layout_weight="0.16"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/imageView21"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/orange"
+                android:scaleType="fitXY"
+                android:text="اتمام فعالیت"
+                app:srcCompat="@drawable/vaziat1" />
+
             <Button
                 android:id="@+id/imageView20"
                 android:layout_width="0dp"
@@ -210,15 +251,6 @@
                 android:background="@color/green"
                 app:srcCompat="@drawable/button4" />
 
-            <Button
-                android:id="@+id/imageView21"
-                android:layout_width="0dp"
-                android:layout_weight="0.35"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:background="@color/orange"
-                android:text="اتمام فعالیت"
-                app:srcCompat="@drawable/vaziat1" />
         </LinearLayout>
     </LinearLayout>
 

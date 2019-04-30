@@ -7,17 +7,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import ir.appsoar.teknesian.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -27,6 +24,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -35,44 +33,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.appsoar.teknesian.Activity.OrderManageActivity;
+import ir.appsoar.teknesian.Adapter.BuildingHistoryAdapter;
+import ir.appsoar.teknesian.Adapter.OrdersAdapter;
 import ir.appsoar.teknesian.Helper.Config;
+import ir.appsoar.teknesian.Helper.HelperShamsi;
+import ir.appsoar.teknesian.Models.BuildingHistoryModel;
+import ir.appsoar.teknesian.Models.CatnameModel;
+import ir.appsoar.teknesian.R;
 
-public class TamirFormFrag extends Fragment {
+public class BuildingHistoryFragment extends Fragment {
     private static SharedPreferences prefs;
-    private Spinner tamirkindspin;
-    private EditText saieredit;
-    private EditText comment;
-    private EditText eghdamatedit;
-    private Spinner teknesianneedspin;
-    private Spinner spareneedspin;
+    private static List<BuildingHistoryModel> catname;
+    RecyclerView recyclerView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parentViewGroup,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_tamirform, parentViewGroup, false);
-        OrderManageActivity.toolbar.setTitle("فرم تعمیر");
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-         tamirkindspin= rootView.findViewById(R.id.tamirkind);
-         saieredit= rootView.findViewById(R.id.saier);
-        eghdamatedit= rootView.findViewById(R.id.eghdamat);
-         teknesianneedspin= rootView.findViewById(R.id.teknesianneed);
-         spareneedspin= rootView.findViewById(R.id.spareneed);
-        comment= rootView.findViewById(R.id.comment);
-        Button confirm= rootView.findViewById(R.id.dialogButtonOK);
-        confirm.setOnClickListener(view -> {confirm.setEnabled(false);new sendDatastart().execute();});
-        tamirkindspin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(position==7)
-                saieredit.setEnabled(true);
-                else
-                    saieredit.setEnabled(false);
-            }
+        View rootView = inflater.inflate(R.layout.fragment_building_history, parentViewGroup, false);
+        OrderManageActivity.toolbar.setTitle("تاریخچه ساختمان");
+        prefs=PreferenceManager.getDefaultSharedPreferences(getContext());
+        recyclerView=rootView.findViewById(R.id.recyclertarikhche);
+        new sendDatastart().execute();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-        });
         return rootView;
     }
     private String Resultstart;
@@ -89,10 +70,7 @@ public class TamirFormFrag extends Fragment {
         protected Void doInBackground(Void... params) {
             String id = prefs.getString(getString(R.string.id),"");
             String token = prefs.getString(getString(R.string.token),"");
-            String tamirkindtxt=tamirkindspin.getSelectedItem().toString();
-            if(tamirkindtxt.equals("سایر"))
-                tamirkindtxt=saieredit.getText().toString();
-            Resultstart = getRequeststart(id,token,OrderManageActivity.reqid,tamirkindtxt,spareneedspin.getSelectedItem().toString(),teknesianneedspin.getSelectedItem().toString(),comment.getText().toString(),eghdamatedit.getText().toString());
+            Resultstart = getRequeststart(id,token,OrderManageActivity.reqid);
             return null;
         }
 
@@ -114,8 +92,23 @@ public class TamirFormFrag extends Fragment {
             }
             JSONObject json = new JSONObject(str.toString());
             result=json.getString("message");
-            if(result.equals("success"))
+            if(result.equals("success")){
                 result= "200";
+                if(json.has("data")){
+                    JSONArray array=json.getJSONArray("data");
+                    catname=new ArrayList<>();
+                    for(int q=0;q<array.length();q++){
+                        JSONObject json1=array.getJSONObject(q);
+                        BuildingHistoryModel building=new BuildingHistoryModel(
+                                json1.getString("id"),
+                                HelperShamsi.gregorianToShamsiDate(json1.getString("date")),
+                                json1.getString("kind"),
+                                json1.getString("teknesian")
+                        );
+                        catname.add(building);
+                    }
+                }
+            }
             else
                 result= "400";
 
@@ -128,27 +121,17 @@ public class TamirFormFrag extends Fragment {
     private String getRequeststart(
             String id,
             String token,
-            String reqid,
-            String tamirkind,
-            String spareneed,
-            String teknesianneed,
-            String comment,
-            String eghdamat
+            String reqid
     ) {
         String resultstart = "";
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost requeststart = new HttpPost(Config.ADMIN_PANEL_URL + "tamirformsave");
+        HttpPost requeststart = new HttpPost(Config.ADMIN_PANEL_URL + "buildinghistory");
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("id", id));
             nameValuePairs.add(new BasicNameValuePair("token", token));
             nameValuePairs.add(new BasicNameValuePair("reqid", reqid));
-            nameValuePairs.add(new BasicNameValuePair("tamirkind", tamirkind));
-            nameValuePairs.add(new BasicNameValuePair("spareneed", spareneed));
-            nameValuePairs.add(new BasicNameValuePair("teknesianneed", teknesianneed));
-            nameValuePairs.add(new BasicNameValuePair("eghdamat", eghdamat));
-            nameValuePairs.add(new BasicNameValuePair("tamircomment", comment));
             requeststart.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
             HttpResponse responsestart = client.execute(requeststart);
             resultstart = requeststart(responsestart);
@@ -159,15 +142,22 @@ public class TamirFormFrag extends Fragment {
     }
     private void resultAlertstart(String HasilProses) {
         if (HasilProses.trim().equalsIgnoreCase("200")) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame,new FactorFrag());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            initaddressview();
         } else if (HasilProses.trim().equalsIgnoreCase("400")) {
             Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
         }
     }
+    private void initaddressview(){
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        recyclerView.setLayoutManager(layoutManager);
+        if(catname!=null) {
+            BuildingHistoryAdapter recyclerViewAdapter = new BuildingHistoryAdapter(catname, getContext());
+
+            recyclerView.setAdapter(recyclerViewAdapter);
+        }
+    }
 }

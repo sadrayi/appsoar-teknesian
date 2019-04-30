@@ -89,8 +89,7 @@ public class AdapterSafety extends RecyclerView.Adapter<AdapterSafety.ViewHolder
         String htmlText = arrayItemGalleryList.get(position).getSContent();
 
         String text = "<html dir='rtl'><head>"
-                + "<style type=\"text/css\">body{color: #525252;}"
-                + "</style></head>"
+                + "</head>"
                 + "<body>"
                 + htmlText
                 + "</body></html>";
