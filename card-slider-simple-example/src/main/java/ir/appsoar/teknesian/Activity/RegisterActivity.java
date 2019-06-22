@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity implements IPickResult {
         nametxt = findViewById(R.id.name);
         phonetxt = findViewById(R.id.phone);
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (!prefs.getString(getString(R.string.name), "0").equals(0))
+        if (!prefs.getString(getString(R.string.name), "0").equals("0"))
             edit = false;
         phonetxt.setText(prefs.getString(getString(R.string.phone), "0"));
         token = prefs.getString(getString(R.string.token), "0");

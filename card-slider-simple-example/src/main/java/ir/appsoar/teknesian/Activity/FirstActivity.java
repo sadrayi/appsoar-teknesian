@@ -34,6 +34,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import ir.appsoar.teknesian.R;
 
 import org.apache.http.HttpResponse;
@@ -79,6 +80,7 @@ public class FirstActivity extends AppCompatActivity
     @SuppressLint("StaticFieldLeak")
     private static TextView mogheiattextview;
     private static Boolean isactive = false;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,9 +135,9 @@ public class FirstActivity extends AppCompatActivity
                             statustextviewheader.setText("غیرفعال");
                             statustextviewheader.setChecked(false);
                             mogheiattextview.setText("غیرفعال");
-                        } else  {
+                        } else {
                             if (activdialuge != null) {
-                                prefs.edit().putString(getString(R.string.lastlatlng),status).apply();
+                                prefs.edit().putString(getString(R.string.lastlatlng), status).apply();
                                 activdialuge.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                 activdialuge.setContentText("وضعیت شما فعال شد.");
                                 activdialuge.showCancelButton(false);
@@ -162,13 +164,12 @@ public class FirstActivity extends AppCompatActivity
 
             Log.i("***********prefs", "154");
             if (activestatus == 1)
-                if(isMyServiceRunning(LocationManagerService.class))
-                {
+                if (isMyServiceRunning(LocationManagerService.class)) {
                     Log.i("***********prefs", "157");
-                    String latlng=prefs.getString(getString(R.string.lastlatlng),null);
+                    String latlng = prefs.getString(getString(R.string.lastlatlng), null);
                     Log.i("***********prefs", String.valueOf(latlng));
-                    if(latlng!=null)
-                    startActivity(new Intent(FirstActivity.this, MainActivity.class));
+                    if (latlng != null)
+                        startActivity(new Intent(FirstActivity.this, MainActivity.class));
                     else {
 
                         pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
@@ -177,8 +178,7 @@ public class FirstActivity extends AppCompatActivity
                                 .setContentText("ارتباط شما با سرور قطع می باشد\n لطفا مجددا وضعیت را فعال نمایید.").setCancelable(false);
                         pDialog.show();
                     }
-                }
-            else {
+                } else {
                     pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
                     pDialog.setTitleText("خطا")
                             .setConfirmText("تایید")
@@ -315,7 +315,7 @@ public class FirstActivity extends AppCompatActivity
 
                 @Override
                 public void run() {
-                    doubleBackToExitPressedOnce=false;
+                    doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
         }
@@ -366,16 +366,14 @@ public class FirstActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Log.d("navigation", "clicked");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-
-        } else if (id == R.id.requests) {
+        if (id == R.id.requests) {
             startActivity(new Intent(FirstActivity.this, Requests_Frag.class));
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(FirstActivity.this, RegisterActivity.class));
@@ -486,7 +484,7 @@ public class FirstActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        int id=v.getId();
+        int id = v.getId();
         if (id == R.id.nav_camera) {
 
         } else if (id == R.id.requests) {
