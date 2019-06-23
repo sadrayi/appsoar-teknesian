@@ -1,5 +1,6 @@
 package ir.appsoar.teknesian.Activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -16,7 +17,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,6 +38,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import ir.appsoar.teknesian.Helper.Permissons;
 import ir.appsoar.teknesian.R;
 
 import org.apache.http.HttpResponse;
@@ -226,37 +230,24 @@ public class FirstActivity extends AppCompatActivity
         statustextviewheader = findViewById(R.id.eshterak);
         statustextviewheader.setOnClickListener(view -> {
             if (prefs.getString(getString(R.string.sherkatno), null) != null) {
-                String locationProviders = Settings.Secure.getString(getContentResolver(), LOCATION_PROVIDERS_ALLOWED);
-                if (locationProviders == null || locationProviders.equals("")) {
-                    final SweetAlertDialog pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
-                    pDialog.setTitleText("خطا")
-                            .setConfirmText("تایید")
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                pDialog.dismiss();
-                            })
-                            .setContentText("ابتدا موقعیت یاب خود را فعال نمایید.").setCancelable(false);
-                    pDialog.show();
-                } else {
-                    if (activestatus == 0) {
-                        activdialuge = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                        activdialuge
-                                .setTitleText("فعالسازی")
-                                .setContentText("درحال دریافت موقعیت")
-                                .setCancelText("لغو")
-                                .setCancelClickListener(sweetAlertDialog -> {
-                                    stopService(service);
-                                    activdialuge.dismiss();
-                                })
-                                .setCancelable(false);
-                        activdialuge.show();
-                        startService(service);
-                    } else if (activestatus == 1) {
-                        stopService(service);
-                        new sendDatastart().execute();
+                ArrayList<String> permissions = new ArrayList<>();
+                if (!Permissons.Check_FINE_LOCATION(this))
+                    permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
 
+                if (!Permissons.Check_Internet(this))
+                    permissions.add(Manifest.permission.INTERNET);
+                if (permissions.size() > 0) {
+                    String[] namesArr = new String[permissions.size()];
+                    for (int j = 0; j < permissions.size(); j++) {
+                        namesArr[j] = permissions.get(j);
                     }
+                    ActivityCompat.requestPermissions(this, namesArr, 22);
+
+                } else {
+                    activateState();
                 }
+
+
             } else {
                 final SweetAlertDialog pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
                 pDialog.setTitleText("خطا")
@@ -286,7 +277,58 @@ public class FirstActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
 
+        // BEGIN_INCLUDE(permission_result)
+        // Received permission result for camera permission.
+        Log.i("respone", "Received response for Camera permission request.");
+        boolean granted = true;
+        for (int grantResult : grantResults) {
+            if (grantResult != 0)
+                granted = false;
+        }
+        // Check if the only required permission has been granted
+        if (granted) {
+            activateState();
+        } else {
+            SweetAlertDialog pDialog1 = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+            pDialog1
+                    .setTitleText("خطا")
+                    .setContentText("دسترسی به تمام مجوز ها الزامی است.")
+                    .setCancelText("خروج");
+            pDialog1
+                    .setCancelClickListener(sweetAlertDialog -> {
+                        pDialog1.dismiss();
+                        this.finish();
+                    });
+            pDialog1
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        ArrayList<String> permissions1 = new ArrayList<>();
+                        if (!Permissons.Check_FINE_LOCATION(this))
+                            permissions1.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+                        if (!Permissons.Check_STORAGE(this))
+                            permissions1.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                        if (!Permissons.Check_Internet(this))
+                            permissions1.add(Manifest.permission.INTERNET);
+                        if (permissions1.size() > 0) {
+                            String[] namesArr = new String[permissions1.size()];
+                            for (int i = 0; i < permissions1.size(); i++) {
+                                namesArr[i] = permissions1.get(i);
+                            }
+                            ActivityCompat.requestPermissions(this, namesArr, 22);
+
+                        }
+                        pDialog1.dismiss();
+                    })
+                    .setConfirmText("سعی مجدد").show();
+        }
+
+
+    }
     private Intent service;
 
     private void showAlertDialog() {
@@ -296,6 +338,41 @@ public class FirstActivity extends AppCompatActivity
     }
 
     private boolean doubleBackToExitPressedOnce = false;
+
+
+    void activateState() {
+        String locationProviders = Settings.Secure.getString(getContentResolver(), LOCATION_PROVIDERS_ALLOWED);
+        if (locationProviders == null || locationProviders.equals("")) {
+            final SweetAlertDialog pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
+            pDialog.setTitleText("خطا")
+                    .setConfirmText("تایید")
+                    .setConfirmClickListener(sweetAlertDialog -> {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        pDialog.dismiss();
+                    })
+                    .setContentText("ابتدا موقعیت یاب خود را فعال نمایید.").setCancelable(false);
+            pDialog.show();
+        } else {
+            if (activestatus == 0) {
+                activdialuge = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                activdialuge
+                        .setTitleText("فعالسازی")
+                        .setContentText("درحال دریافت موقعیت")
+                        .setCancelText("لغو")
+                        .setCancelClickListener(sweetAlertDialog -> {
+                            stopService(service);
+                            activdialuge.dismiss();
+                        })
+                        .setCancelable(false);
+                activdialuge.show();
+                startService(service);
+            } else if (activestatus == 1) {
+                stopService(service);
+                new sendDatastart().execute();
+
+            }
+        }
+    }
 
     @Override
     public void onBackPressed() {

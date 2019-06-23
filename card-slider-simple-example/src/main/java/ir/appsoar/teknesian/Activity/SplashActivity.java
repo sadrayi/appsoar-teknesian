@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import ir.appsoar.teknesian.R;
 
 import org.apache.http.HttpResponse;
@@ -64,97 +65,20 @@ public class SplashActivity extends AppCompatActivity {
         Pushe.initialize(this, true);
         Glide.with(this).load(R.drawable.logomain).into((ImageView) findViewById(R.id.imageView6));
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        ArrayList<String> permissions = new ArrayList<>();
-        if (!Permissons.Check_FINE_LOCATION(SplashActivity.this))
-            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (!Permissons.Check_STORAGE(SplashActivity.this))
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (!Permissons.Check_Internet(SplashActivity.this))
-            permissions.add(Manifest.permission.INTERNET);
-        if (permissions.size() > 0) {
-            String[] namesArr = new String[permissions.size()];
-            for (int i = 0; i < permissions.size(); i++) {
-                namesArr[i] = permissions.get(i);
-            }
-            ActivityCompat.requestPermissions(this, namesArr, 22);
-
+        if (prefs.getString(getString(R.string.token), null) != null) {
+            new sendDatastart().execute();
         } else {
-            if (prefs.getString(getString(R.string.token), null) != null) {
-                new sendDatastart().execute();
-            } else {
 
-                new Handler().postDelayed(() -> {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }, 2000);
-            }
-
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                finish();
+            }, 2000);
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        // BEGIN_INCLUDE(permission_result)
-        // Received permission result for camera permission.
-        Log.i("respone", "Received response for Camera permission request.");
-        boolean granted=true;
-        for (int grantResult : grantResults) {
-            if (grantResult != 0)
-                granted = false;
-        }
-        // Check if the only required permission has been granted
-        if (granted) {
-            if (prefs.getString(getString(R.string.token), null) != null) {
-                new sendDatastart().execute();
-            } else {
-
-                new Handler().postDelayed(() -> {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }, 2000);
-            }
-        } else {
-            SweetAlertDialog pDialog1 = new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.WARNING_TYPE);
-            pDialog1
-                    .setTitleText("خطا")
-                    .setContentText("دسترسی به تمام مجوز ها الزامی است.")
-                    .setCancelText("خروج");
-            pDialog1
-                    .setCancelClickListener(sweetAlertDialog -> {
-                        pDialog1.dismiss();
-                        SplashActivity.this.finish();
-                    });
-            pDialog1
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        ArrayList<String> permissions1 = new ArrayList<>();
-                        if (!Permissons.Check_FINE_LOCATION(SplashActivity.this))
-                            permissions1.add(Manifest.permission.ACCESS_FINE_LOCATION);
-
-                        if (!Permissons.Check_STORAGE(SplashActivity.this))
-                            permissions1.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                        if (!Permissons.Check_Internet(SplashActivity.this))
-                            permissions1.add(Manifest.permission.INTERNET);
-                        if (permissions1.size() > 0) {
-                            String[] namesArr = new String[permissions1.size()];
-                            for (int i = 0; i < permissions1.size(); i++) {
-                                namesArr[i] = permissions1.get(i);
-                            }
-                            ActivityCompat.requestPermissions(SplashActivity.this, namesArr, 22);
-
-                        }
-                        pDialog1.dismiss();
-                    })
-                    .setConfirmText("سعی مجدد").show();
-        }
-
 
 
     }
+
 
     private String Resultstart;
 
@@ -177,7 +101,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            if(Resultstart.equals("404"))
+            if (Resultstart.equals("404"))
                 showerrorconnect();
             else
                 resultAlertstart(Resultstart);
@@ -197,9 +121,9 @@ public class SplashActivity extends AppCompatActivity {
             result = json.getString("message");
             try {
                 PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                if (json.getInt("ver") != pInfo.versionCode) {
-                    UpdateApp();
-                }
+                /*if (json.getInt("ver") != pInfo.versionCode) {
+                   // UpdateApp();
+                }*/
             } catch (Exception ignored) {
 
             }
@@ -326,14 +250,18 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     SweetAlertDialog pDialog1;
-    public void showerrorconnect(){
+
+    public void showerrorconnect() {
         runOnUiThread(() -> {
             pDialog1 = new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.ERROR_TYPE);
             pDialog1.setContentText("در برقراری ارتباط با سرور مشکلی پیش آمده است لطفا اتصال اینترنت خود را چک نمایید.");
             pDialog1.setTitleText("عدم ارتباط");
             pDialog1.setConfirmText("سعی مجدد").setCancelText("خروج").setCancelClickListener(sweetAlertDialog -> SplashActivity.this.finish());
-            pDialog1.setConfirmClickListener(sweetAlertDialog -> {new sendDatastart().execute();pDialog1.dismiss();});
-            if (! isFinishing()) {
+            pDialog1.setConfirmClickListener(sweetAlertDialog -> {
+                new sendDatastart().execute();
+                pDialog1.dismiss();
+            });
+            if (!isFinishing()) {
 
                 pDialog1.show();
 
