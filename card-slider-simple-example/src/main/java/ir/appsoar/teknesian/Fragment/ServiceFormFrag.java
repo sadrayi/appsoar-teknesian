@@ -211,9 +211,7 @@ public class ServiceFormFrag extends Fragment {
             pDialog1.setConfirmText("سعی مجدد").setCancelText("خروج").setCancelClickListener(sweetAlertDialog -> getActivity().finish());
             pDialog1.setConfirmClickListener(sweetAlertDialog -> {new sendDatastart().execute();pDialog1.dismiss();});
             if (! getActivity().isFinishing()) {
-
                 pDialog1.show();
-
             }
         });
     }

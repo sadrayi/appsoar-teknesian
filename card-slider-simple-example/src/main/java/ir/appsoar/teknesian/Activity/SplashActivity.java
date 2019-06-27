@@ -62,25 +62,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         Pushe.initialize(this, true);
-        Glide.with(this).load(R.drawable.logomain).into((ImageView) findViewById(R.id.imageView6));
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        ArrayList<String> permissions = new ArrayList<>();
-        if (!Permissons.Check_FINE_LOCATION(SplashActivity.this))
-            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (!Permissons.Check_STORAGE(SplashActivity.this))
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (!Permissons.Check_Internet(SplashActivity.this))
-            permissions.add(Manifest.permission.INTERNET);
-        if (permissions.size() > 0) {
-            String[] namesArr = new String[permissions.size()];
-            for (int i = 0; i < permissions.size(); i++) {
-                namesArr[i] = permissions.get(i);
-            }
-            ActivityCompat.requestPermissions(this, namesArr, 22);
-
-        } else {
+        Glide.with(this).load(R.drawable.logomain).into((ImageView) findViewById(R.id.imageView6));
             if (prefs.getString(getString(R.string.token), null) != null) {
                 new sendDatastart().execute();
             } else {
@@ -91,70 +75,9 @@ public class SplashActivity extends AppCompatActivity {
                 }, 2000);
             }
 
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        // BEGIN_INCLUDE(permission_result)
-        // Received permission result for camera permission.
-        Log.i("respone", "Received response for Camera permission request.");
-        boolean granted=true;
-        for (int grantResult : grantResults) {
-            if (grantResult != 0)
-                granted = false;
-        }
-        // Check if the only required permission has been granted
-        if (granted) {
-            if (prefs.getString(getString(R.string.token), null) != null) {
-                new sendDatastart().execute();
-            } else {
-
-                new Handler().postDelayed(() -> {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }, 2000);
-            }
-        } else {
-            SweetAlertDialog pDialog1 = new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.WARNING_TYPE);
-            pDialog1
-                    .setTitleText("خطا")
-                    .setContentText("دسترسی به تمام مجوز ها الزامی است.")
-                    .setCancelText("خروج");
-            pDialog1
-                    .setCancelClickListener(sweetAlertDialog -> {
-                        pDialog1.dismiss();
-                        SplashActivity.this.finish();
-                    });
-            pDialog1
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        ArrayList<String> permissions1 = new ArrayList<>();
-                        if (!Permissons.Check_FINE_LOCATION(SplashActivity.this))
-                            permissions1.add(Manifest.permission.ACCESS_FINE_LOCATION);
-
-                        if (!Permissons.Check_STORAGE(SplashActivity.this))
-                            permissions1.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                        if (!Permissons.Check_Internet(SplashActivity.this))
-                            permissions1.add(Manifest.permission.INTERNET);
-                        if (permissions1.size() > 0) {
-                            String[] namesArr = new String[permissions1.size()];
-                            for (int i = 0; i < permissions1.size(); i++) {
-                                namesArr[i] = permissions1.get(i);
-                            }
-                            ActivityCompat.requestPermissions(SplashActivity.this, namesArr, 22);
-
-                        }
-                        pDialog1.dismiss();
-                    })
-                    .setConfirmText("سعی مجدد").show();
-        }
-
-
 
     }
+
 
     private String Resultstart;
 
@@ -198,7 +121,21 @@ public class SplashActivity extends AppCompatActivity {
             try {
                 PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                 if (json.getInt("ver") != pInfo.versionCode) {
-                    UpdateApp();
+                    runOnUiThread(() -> {
+                        pDialog1 = new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.ERROR_TYPE);
+                        pDialog1.setContentText("ورژن جدید در دسترس می باشد..");
+                        pDialog1.setTitleText("بروزرسانی");
+                        pDialog1.setConfirmText("دریافت").setCancelText("خروج").setCancelClickListener(sweetAlertDialog -> SplashActivity.this.finish());
+                        pDialog1.setConfirmClickListener(sweetAlertDialog -> {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://snapplift.ir/help.html"));
+                            startActivity(browserIntent);
+                        });
+                        if (! isFinishing()) {
+
+                            pDialog1.show();
+
+                        }
+                    });
                 }
             } catch (Exception ignored) {
 
