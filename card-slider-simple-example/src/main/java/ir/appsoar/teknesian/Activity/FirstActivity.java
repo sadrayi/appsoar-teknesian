@@ -230,24 +230,43 @@ public class FirstActivity extends AppCompatActivity
         statustextviewheader = findViewById(R.id.eshterak);
         statustextviewheader.setOnClickListener(view -> {
             if (prefs.getString(getString(R.string.sherkatno), null) != null) {
-                ArrayList<String> permissions = new ArrayList<>();
-                if (!Permissons.Check_FINE_LOCATION(this))
-                    permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-
-                if (!Permissons.Check_Internet(this))
-                    permissions.add(Manifest.permission.INTERNET);
-                if (permissions.size() > 0) {
-                    String[] namesArr = new String[permissions.size()];
-                    for (int j = 0; j < permissions.size(); j++) {
-                        namesArr[j] = permissions.get(j);
-                    }
-                    ActivityCompat.requestPermissions(this, namesArr, 22);
-
+                String locationProviders = Settings.Secure.getString(getContentResolver(), LOCATION_PROVIDERS_ALLOWED);
+                if (locationProviders == null || locationProviders.equals("")) {
+                    final SweetAlertDialog pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
+                    pDialog.setTitleText("خطا")
+                            .setConfirmText("تایید")
+                            .setConfirmClickListener(sweetAlertDialog -> {
+                                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                pDialog.dismiss();
+                            })
+                            .setContentText("ابتدا موقعیت یاب خود را فعال نمایید.").setCancelable(false);
+                    pDialog.show();
                 } else {
-                    activateState();
+                    if (activestatus == 0) {
+                        ArrayList<String> permissions = new ArrayList<>();
+                        if (!Permissons.Check_FINE_LOCATION(this))
+                            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+                        if (!Permissons.Check_STORAGE(this))
+                            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                        if (!Permissons.Check_Internet(this))
+                            permissions.add(Manifest.permission.INTERNET);
+                        if (permissions.size() > 0) {
+                            String[] namesArr = new String[permissions.size()];
+                            for (int j = 0; j < permissions.size(); j++) {
+                                namesArr[j] = permissions.get(j);
+                            }
+                            ActivityCompat.requestPermissions(this, namesArr, 22);
+                        } else {
+                            activeStatus();
+                        }
+                    } else if (activestatus == 1) {
+                        stopService(service);
+                        new sendDatastart().execute();
+
+                    }
                 }
-
-
             } else {
                 final SweetAlertDialog pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
                 pDialog.setTitleText("خطا")
@@ -275,8 +294,43 @@ public class FirstActivity extends AppCompatActivity
             stopService(service);
         }
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        findViewById(R.id.requests).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FirstActivity.this, Requests_Frag.class));
+            }
+        });
+        ((TextView)findViewById(R.id.username)).setText(prefs.getString(getString(R.string.username),"بدون نام"));
+        findViewById(R.id.editprofile).setOnClickListener(v -> startActivity(new Intent(FirstActivity.this, RegisterActivity.class)));
+        findViewById(R.id.terms).setOnClickListener(v -> {
+
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.Pic_Url+"teknesian.apk"));
+            startActivity(browserIntent);            });
     }
+
+    private Intent service;
+
+    void activeStatus() {
+        activdialuge = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        activdialuge
+                .setTitleText("فعالسازی")
+                .setContentText("درحال دریافت موقعیت")
+                .setCancelText("لغو")
+                .setCancelClickListener(sweetAlertDialog -> {
+                    stopService(service);
+                    activdialuge.dismiss();
+                })
+                .setCancelable(false);
+        activdialuge.show();
+        startService(service);
+    }
+
+    private void showAlertDialog() {
+
+        dbhelper.deleteAllData();
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -291,7 +345,7 @@ public class FirstActivity extends AppCompatActivity
         }
         // Check if the only required permission has been granted
         if (granted) {
-            activateState();
+            activeStatus();
         } else {
             SweetAlertDialog pDialog1 = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
             pDialog1
@@ -329,50 +383,8 @@ public class FirstActivity extends AppCompatActivity
 
 
     }
-    private Intent service;
-
-    private void showAlertDialog() {
-
-        dbhelper.deleteAllData();
-
-    }
 
     private boolean doubleBackToExitPressedOnce = false;
-
-
-    void activateState() {
-        String locationProviders = Settings.Secure.getString(getContentResolver(), LOCATION_PROVIDERS_ALLOWED);
-        if (locationProviders == null || locationProviders.equals("")) {
-            final SweetAlertDialog pDialog = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.ERROR_TYPE);
-            pDialog.setTitleText("خطا")
-                    .setConfirmText("تایید")
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        pDialog.dismiss();
-                    })
-                    .setContentText("ابتدا موقعیت یاب خود را فعال نمایید.").setCancelable(false);
-            pDialog.show();
-        } else {
-            if (activestatus == 0) {
-                activdialuge = new SweetAlertDialog(FirstActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                activdialuge
-                        .setTitleText("فعالسازی")
-                        .setContentText("درحال دریافت موقعیت")
-                        .setCancelText("لغو")
-                        .setCancelClickListener(sweetAlertDialog -> {
-                            stopService(service);
-                            activdialuge.dismiss();
-                        })
-                        .setCancelable(false);
-                activdialuge.show();
-                startService(service);
-            } else if (activestatus == 1) {
-                stopService(service);
-                new sendDatastart().execute();
-
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -434,7 +446,7 @@ public class FirstActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Log.e("onclickedOption",String.valueOf(id));
         /*noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -445,19 +457,13 @@ public class FirstActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Log.d("navigation", "clicked");
+        Log.e("navigation", "clicked");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         int id = item.getItemId();
+        Log.e("onclicked",String.valueOf(id));
 
-        if (id == R.id.requests) {
-            startActivity(new Intent(FirstActivity.this, Requests_Frag.class));
-        } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(FirstActivity.this, RegisterActivity.class));
-        } else if (id == R.id.help) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://snapplift.ir/help.html"));
-            startActivity(browserIntent);
-        }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

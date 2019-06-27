@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import ir.appsoar.teknesian.R;
 
 import org.apache.http.HttpResponse;
@@ -63,18 +62,18 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         Pushe.initialize(this, true);
-        Glide.with(this).load(R.drawable.logomain).into((ImageView) findViewById(R.id.imageView6));
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-        if (prefs.getString(getString(R.string.token), null) != null) {
-            new sendDatastart().execute();
-        } else {
+        Glide.with(this).load(R.drawable.logomain).into((ImageView) findViewById(R.id.imageView6));
+            if (prefs.getString(getString(R.string.token), null) != null) {
+                new sendDatastart().execute();
+            } else {
 
-            new Handler().postDelayed(() -> {
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                finish();
-            }, 2000);
-        }
+                new Handler().postDelayed(() -> {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    finish();
+                }, 2000);
+            }
 
 
     }
@@ -101,7 +100,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            if (Resultstart.equals("404"))
+            if(Resultstart.equals("404"))
                 showerrorconnect();
             else
                 resultAlertstart(Resultstart);
@@ -121,9 +120,23 @@ public class SplashActivity extends AppCompatActivity {
             result = json.getString("message");
             try {
                 PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                /*if (json.getInt("ver") != pInfo.versionCode) {
-                   // UpdateApp();
-                }*/
+                if (json.getInt("ver") != pInfo.versionCode) {
+                    runOnUiThread(() -> {
+                        pDialog1 = new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.ERROR_TYPE);
+                        pDialog1.setContentText("ورژن جدید در دسترس می باشد..");
+                        pDialog1.setTitleText("بروزرسانی");
+                        pDialog1.setConfirmText("دریافت").setCancelText("خروج").setCancelClickListener(sweetAlertDialog -> SplashActivity.this.finish());
+                        pDialog1.setConfirmClickListener(sweetAlertDialog -> {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://snapplift.ir/help.html"));
+                            startActivity(browserIntent);
+                        });
+                        if (! isFinishing()) {
+
+                            pDialog1.show();
+
+                        }
+                    });
+                }
             } catch (Exception ignored) {
 
             }
@@ -250,18 +263,14 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     SweetAlertDialog pDialog1;
-
-    public void showerrorconnect() {
+    public void showerrorconnect(){
         runOnUiThread(() -> {
             pDialog1 = new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.ERROR_TYPE);
             pDialog1.setContentText("در برقراری ارتباط با سرور مشکلی پیش آمده است لطفا اتصال اینترنت خود را چک نمایید.");
             pDialog1.setTitleText("عدم ارتباط");
             pDialog1.setConfirmText("سعی مجدد").setCancelText("خروج").setCancelClickListener(sweetAlertDialog -> SplashActivity.this.finish());
-            pDialog1.setConfirmClickListener(sweetAlertDialog -> {
-                new sendDatastart().execute();
-                pDialog1.dismiss();
-            });
-            if (!isFinishing()) {
+            pDialog1.setConfirmClickListener(sweetAlertDialog -> {new sendDatastart().execute();pDialog1.dismiss();});
+            if (! isFinishing()) {
 
                 pDialog1.show();
 
